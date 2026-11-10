@@ -103,9 +103,31 @@ app.get('/', (req, res) => {
     });
 });
 
+function formatDish(dish, baseUrl) {
+    let img = dish.image;
+    if (img && !img.startsWith('http://') && !img.startsWith('https://')) {
+        let cleanPath = img;
+        if (cleanPath.startsWith('/')) {
+            cleanPath = cleanPath.slice(1);
+        }
+        if (cleanPath.startsWith('images/')) {
+            cleanPath = cleanPath.slice(7);
+        }
+        img = `${baseUrl}/labs/api/images/${cleanPath}`;
+    }
+    return {
+        ...dish,
+        image: img
+    };
+}
+
 // GET /labs/api/dishes
 app.get('/labs/api/dishes', (req, res) => {
-    res.json(dishes);
+    const host = req.get('host');
+    const protocol = req.protocol;
+    const baseUrl = `${protocol}://${host}`;
+    const result = dishes.map((dish) => formatDish(dish, baseUrl));
+    res.json(result);
 });
 
 // GET /labs/api/dishes/:id
@@ -115,7 +137,10 @@ app.get('/labs/api/dishes/:id', (req, res) => {
     if (!dish) {
         return res.status(404).json({ error: 'Блюдо не найдено' });
     }
-    res.json(dish);
+    const host = req.get('host');
+    const protocol = req.protocol;
+    const baseUrl = `${protocol}://${host}`;
+    res.json(formatDish(dish, baseUrl));
 });
 
 // GET /labs/api/orders
