@@ -74,6 +74,7 @@ app.use(upload.none()); // parses multipart/form-data text fields
 
 // Serve static images
 app.use('/images', express.static(path.join(__dirname, 'public/images')));
+app.use('/labs/api/images', express.static(path.join(__dirname, 'public/images')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // API Key authorization middleware for /labs/api/orders
