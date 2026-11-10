@@ -12,6 +12,9 @@ services:
       - PUBLIC_API_URL=https://amd.dedyn.io:15243
     volumes:
       - ./data:/app/data
+      - ./server.js:/app/server.js
+      - ./dishes.json:/app/dishes.json
+      - ./public:/app/public
     networks:
       - proxy-net
 
