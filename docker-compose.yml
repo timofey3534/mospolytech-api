@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  mospolytech-api:
+    build: .
+    container_name: mospolytech-labs-api
+    restart: unless-stopped
+    ports:
+      - "8085:8085"
+    environment:
+      - PORT=8085
+    volumes:
+      - ./data:/app/data
