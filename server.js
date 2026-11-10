@@ -103,6 +103,19 @@ app.get('/', (req, res) => {
     });
 });
 
+function getBaseUrl(req) {
+    if (process.env.PUBLIC_API_URL) {
+        return process.env.PUBLIC_API_URL.replace(/\/+$/, '');
+    }
+    const host = req.get('host') || 'amd.dedyn.io:15243';
+    const protocol = req.protocol || 'https';
+    let fullHost = host;
+    if (fullHost === 'amd.dedyn.io') {
+        fullHost = 'amd.dedyn.io:15243';
+    }
+    return `${protocol}://${fullHost}`;
+}
+
 function formatDish(dish, baseUrl) {
     let img = dish.image;
     if (img && !img.startsWith('http://') && !img.startsWith('https://')) {
@@ -123,9 +136,7 @@ function formatDish(dish, baseUrl) {
 
 // GET /labs/api/dishes
 app.get('/labs/api/dishes', (req, res) => {
-    const host = req.get('host');
-    const protocol = req.protocol;
-    const baseUrl = `${protocol}://${host}`;
+    const baseUrl = getBaseUrl(req);
     const result = dishes.map((dish) => formatDish(dish, baseUrl));
     res.json(result);
 });
@@ -137,9 +148,7 @@ app.get('/labs/api/dishes/:id', (req, res) => {
     if (!dish) {
         return res.status(404).json({ error: 'Блюдо не найдено' });
     }
-    const host = req.get('host');
-    const protocol = req.protocol;
-    const baseUrl = `${protocol}://${host}`;
+    const baseUrl = getBaseUrl(req);
     res.json(formatDish(dish, baseUrl));
 });
 

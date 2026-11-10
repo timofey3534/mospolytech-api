@@ -9,6 +9,7 @@ services:
       - "8085:8085"
     environment:
       - PORT=8085
+      - PUBLIC_API_URL=https://amd.dedyn.io:15243
     volumes:
       - ./data:/app/data
     networks:
