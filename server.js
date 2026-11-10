@@ -5,6 +5,7 @@ const path = require('path');
 const fs = require('fs');
 
 const app = express();
+app.set('trust proxy', true);
 const PORT = process.env.PORT || 8085;
 
 // Load dishes catalog

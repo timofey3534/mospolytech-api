@@ -3,7 +3,7 @@ version: '3.8'
 services:
   mospolytech-api:
     build: .
-    container_name: mospolytech-labs-api
+    container_name: mospolytech-api
     restart: unless-stopped
     ports:
       - "8085:8085"
@@ -11,3 +11,9 @@ services:
       - PORT=8085
     volumes:
       - ./data:/app/data
+    networks:
+      - proxy-net
+
+networks:
+  proxy-net:
+    external: true
