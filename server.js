@@ -105,20 +105,7 @@ app.get('/', (req, res) => {
 
 // GET /labs/api/dishes
 app.get('/labs/api/dishes', (req, res) => {
-    const host = req.get('host');
-    const protocol = req.protocol;
-    const formattedDishes = dishes.map((dish) => {
-        let img = dish.image;
-        if (img && !img.startsWith('http://') && !img.startsWith('https://')) {
-            const cleanPath = img.startsWith('/') ? img.slice(1) : img;
-            img = `${protocol}://${host}/${cleanPath}`;
-        }
-        return {
-            ...dish,
-            image: img
-        };
-    });
-    res.json(formattedDishes);
+    res.json(dishes);
 });
 
 // GET /labs/api/dishes/:id
@@ -128,14 +115,7 @@ app.get('/labs/api/dishes/:id', (req, res) => {
     if (!dish) {
         return res.status(404).json({ error: 'Блюдо не найдено' });
     }
-    const host = req.get('host');
-    const protocol = req.protocol;
-    let img = dish.image;
-    if (img && !img.startsWith('http://') && !img.startsWith('https://')) {
-        const cleanPath = img.startsWith('/') ? img.slice(1) : img;
-        img = `${protocol}://${host}/${cleanPath}`;
-    }
-    res.json({ ...dish, image: img });
+    res.json(dish);
 });
 
 // GET /labs/api/orders
